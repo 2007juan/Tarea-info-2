@@ -49,6 +49,12 @@ class Mascota:
         self.__fecha_ingreso=f
     def asignarLista_Medicamentos(self,n):
         self.__lista_medicamentos = n 
+    def eliminarMedicamento(self, nombre_medicamento):
+        for m in self.__lista_medicamentos:
+            if m.verNombre().lower() == nombre_medicamento.lower():
+                self.__lista_medicamentos.remove(m)
+                return f"Medicamento '{nombre_medicamento}' eliminado con éxito"
+        return f"El medicamento '{nombre_medicamento}' no está en la lista"
 
 class sistemaV:
     def __init__(self):
@@ -90,6 +96,13 @@ class sistemaV:
             return "Mascota eliminada del sistema con éxito"
         return "La historia clínica no está en el sistema"
 
+    def eliminarMedicamentoDeMascota(self, historia, nombre_medicamento):
+        if historia in self.__caninos:
+            return self.__caninos[historia].eliminarMedicamento(nombre_medicamento)
+        elif historia in self.__felinos:
+            return self.__felinos[historia].eliminarMedicamento(nombre_medicamento)
+        return "La mascota no está registrada en el sistema"
+
 def validar_fecha(fecha):
     patron = r"^\d{2}/\d{2}/\d{4}$"
     return bool(re.match(patron, fecha))
@@ -104,7 +117,8 @@ def main():
 3- Ver número de mascotas en el servicio 
 4- Ver medicamentos que se están administrando
 5- Eliminar mascota 
-6- Salir 
+6- Eliminar medicamento de una mascota
+7- Salir 
 Opción: ''' ))
 
         if menu==1:
@@ -208,7 +222,16 @@ Opción: ''' ))
                 continue
             print(servicio_hospitalario.eliminarMascota(q))
         
-        elif menu==6:
+        elif menu == 6:
+            try:
+                historia = int(input("Ingrese la historia clínica de la mascota: "))
+            except:
+                print("Debe ingresar un número válido.")
+                continue
+            nombre_medicamento = input("Ingrese el nombre del medicamento que desea eliminar: ")
+            print(servicio_hospitalario.eliminarMedicamentoDeMascota(historia, nombre_medicamento))
+
+        elif menu==7:
             print("Usted ha salido del sistema de servicio de hospitalización...")
             break
         
