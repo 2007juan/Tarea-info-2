@@ -68,20 +68,20 @@ class sistemaV:
         for masc in self.__lista_mascotas:
             if historia == masc.verHistoria():
                 return masc.verFecha() 
-        return None
+        return "La mascota no está en el sistema"
 
     def verMedicamento(self,historia):
         for masc in self.__lista_mascotas:
             if historia == masc.verHistoria():
                 return masc.verLista_Medicamentos() 
-        return None
+        return "La mascota no está registrada en el sistema"
     
     def eliminarMascota(self, historia):
         for masc in self.__lista_mascotas:
             if historia == masc.verHistoria():
                 self.__lista_mascotas.remove(masc)
-                return True
-        return False 
+                return "Mascota eliminada del sistema con éxito"
+        return "La historia clínica no está en el sistema"
 
 def main():
     servicio_hospitalario = sistemaV()
@@ -100,64 +100,85 @@ Opción: ''' ))
             if servicio_hospitalario.verNumeroMascotas() >= 10:
                 print("No hay espacio ...") 
                 continue
-            historia=int(input("Ingrese la historia clínica de la mascota: "))
-            if not servicio_hospitalario.verificarExiste(historia):
-                nombre=input("Ingrese el nombre de la mascota: ")
-                tipo=input("Ingrese el tipo de mascota (felino o canino): ")
+            try:
+                historia=int(input("Ingrese la historia clínica de la mascota: "))
+            except:
+                print("Debe ingresar un número válido.")
+                continue
+
+            if servicio_hospitalario.verificarExiste(historia):
+                print("Ya existe una mascota con esa historia clínica")
+                continue
+
+            nombre=input("Ingrese el nombre de la mascota: ")
+            tipo=input("Ingrese el tipo de mascota (felino o canino): ")
+            try:
                 peso=int(input("Ingrese el peso de la mascota: "))
-                fecha=input("Ingrese la fecha de ingreso (dia/mes/año): ")
+            except:
+                print("Debe ingresar un número válido para el peso.")
+                continue
+            fecha=input("Ingrese la fecha de ingreso (dd/mm/aaaa): ")
+            try:
                 nm=int(input("Ingrese cantidad de medicamentos: "))
-                lista_med=[]
+            except:
+                print("Debe ingresar un número válido para la cantidad de medicamentos.")
+                continue
 
-                for i in range(nm):
-                    nombre_medicamentos = input("Ingrese el nombre del medicamento: ")
+            lista_med=[]
+            for i in range(nm):
+                nombre_medicamentos = input("Ingrese el nombre del medicamento: ")
+                try:
                     dosis =int(input("Ingrese la dosis: "))
-                    medicamento = Medicamento()
-                    medicamento.asignarNombre(nombre_medicamentos)
-                    medicamento.asignarDosis(dosis)
-                    lista_med.append(medicamento)
+                except:
+                    print("Debe ingresar una dosis válida.")
+                    continue
+                medicamento = Medicamento()
+                medicamento.asignarNombre(nombre_medicamentos)
+                medicamento.asignarDosis(dosis)
+                lista_med.append(medicamento)
 
-                mas= Mascota()
-                mas.asignarNombre(nombre)
-                mas.asignarHistoria(historia)
-                mas.asignarPeso(peso)
-                mas.asignarTipo(tipo)
-                mas.asignarFecha(fecha)
-                mas.asignarLista_Medicamentos(lista_med)
-                servicio_hospitalario.ingresarMascota(mas)
-
-            else:
-                print("Ya existe la mascota con el número de historia clínica")
+            mas= Mascota()
+            mas.asignarNombre(nombre)
+            mas.asignarHistoria(historia)
+            mas.asignarPeso(peso)
+            mas.asignarTipo(tipo)
+            mas.asignarFecha(fecha)
+            mas.asignarLista_Medicamentos(lista_med)
+            servicio_hospitalario.ingresarMascota(mas)
 
         elif menu==2:
-            q = int(input("Ingrese la historia clínica de la mascota: "))
-            fecha = servicio_hospitalario.verFechaIngreso(q)
-            if fecha != None:
-                print("La fecha de ingreso de la mascota es: " + fecha)
-            else:
-                print("La historia clínica ingresada no corresponde con ninguna mascota en el sistema.")
+            try:
+                q = int(input("Ingrese la historia clínica de la mascota: "))
+            except:
+                print("Debe ingresar un número válido.")
+                continue
+            print(servicio_hospitalario.verFechaIngreso(q))
             
         elif menu==3:
             numero=servicio_hospitalario.verNumeroMascotas()
             print("El número de pacientes en el sistema es: " + str(numero))
 
         elif menu==4:
-            q = int(input("Ingrese la historia clínica de la mascota: "))
-            medicamento = servicio_hospitalario.verMedicamento(q) 
-            if medicamento != None: 
-                print("Los medicamentos suministrados son: ")
-                for m in medicamento:   
-                    print(f"\n- {m.verNombre()}")
+            try:
+                q = int(input("Ingrese la historia clínica de la mascota: "))
+            except:
+                print("Debe ingresar un número válido.")
+                continue
+            resultado = servicio_hospitalario.verMedicamento(q)
+            if isinstance(resultado, str):
+                print(resultado)
             else:
-                print("La historia clínica ingresada no corresponde con ninguna mascota en el sistema.")
+                print("Los medicamentos suministrados son: ")
+                for m in resultado:
+                    print(f"- {m.verNombre()} (Dosis: {m.verDosis()})")
         
         elif menu == 5:
-            q = int(input("Ingrese la historia clínica de la mascota: "))
-            resultado_operacion = servicio_hospitalario.eliminarMascota(q) 
-            if resultado_operacion == True:
-                print("Mascota eliminada del sistema con exito")
-            else:
-                print("No se ha podido eliminar la mascota")
+            try:
+                q = int(input("Ingrese la historia clínica de la mascota: "))
+            except:
+                print("Debe ingresar un número válido.")
+                continue
+            print(servicio_hospitalario.eliminarMascota(q))
         
         elif menu==6:
             print("Usted ha salido del sistema de servicio de hospitalización...")
