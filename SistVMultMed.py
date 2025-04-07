@@ -127,6 +127,9 @@ Opción: ''' ))
                 continue
             try:
                 historia=int(input("Ingrese la historia clínica de la mascota: "))
+                if historia <= 0:
+                    print("El número de historia clínica debe ser un número positivo.")
+                    continue
             except:
                 print("Debe ingresar un número válido.")
                 continue
@@ -191,6 +194,9 @@ Opción: ''' ))
         elif menu==2:
             try:
                 q = int(input("Ingrese la historia clínica de la mascota: "))
+                if q <= 0:
+                    print("El número de historia clínica debe ser un número positivo.")
+                    continue
             except:
                 print("Debe ingresar un número válido.")
                 continue
@@ -203,6 +209,9 @@ Opción: ''' ))
         elif menu==4:
             try:
                 q = int(input("Ingrese la historia clínica de la mascota: "))
+                if q <= 0:
+                    print("El número de historia clínica debe ser un número positivo.")
+                    continue
             except:
                 print("Debe ingresar un número válido.")
                 continue
@@ -217,6 +226,9 @@ Opción: ''' ))
         elif menu == 5:
             try:
                 q = int(input("Ingrese la historia clínica de la mascota: "))
+                if q <= 0:
+                    print("El número de historia clínica debe ser un número positivo.")
+                    continue
             except:
                 print("Debe ingresar un número válido.")
                 continue
@@ -225,6 +237,9 @@ Opción: ''' ))
         elif menu == 6:
             try:
                 historia = int(input("Ingrese la historia clínica de la mascota: "))
+                if historia <= 0:
+                    print("El número de historia clínica debe ser un número positivo.")
+                    continue
             except:
                 print("Debe ingresar un número válido.")
                 continue
