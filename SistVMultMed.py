@@ -1,3 +1,5 @@
+import re
+
 class Medicamento:
     def __init__(self):
         self.__nombre = "" 
@@ -83,6 +85,10 @@ class sistemaV:
                 return "Mascota eliminada del sistema con éxito"
         return "La historia clínica no está en el sistema"
 
+def validar_fecha(fecha):
+    patron = r"^\d{2}/\d{2}/\d{4}$"
+    return bool(re.match(patron, fecha))
+
 def main():
     servicio_hospitalario = sistemaV()
     while True:
@@ -117,7 +123,12 @@ Opción: ''' ))
             except:
                 print("Debe ingresar un número válido para el peso.")
                 continue
+
             fecha=input("Ingrese la fecha de ingreso (dd/mm/aaaa): ")
+            if not validar_fecha(fecha):
+                print("Formato de fecha incorrecto. Debe ser dd/mm/aaaa.")
+                continue
+
             try:
                 nm=int(input("Ingrese cantidad de medicamentos: "))
             except:
@@ -125,13 +136,21 @@ Opción: ''' ))
                 continue
 
             lista_med=[]
+            nombres_med = set()
+
             for i in range(nm):
                 nombre_medicamentos = input("Ingrese el nombre del medicamento: ")
+                if nombre_medicamentos in nombres_med:
+                    print("No se pueden ingresar medicamentos repetidos.")
+                    continue
+                nombres_med.add(nombre_medicamentos)
+
                 try:
                     dosis =int(input("Ingrese la dosis: "))
                 except:
                     print("Debe ingresar una dosis válida.")
                     continue
+
                 medicamento = Medicamento()
                 medicamento.asignarNombre(nombre_medicamentos)
                 medicamento.asignarDosis(dosis)
@@ -189,3 +208,4 @@ Opción: ''' ))
 
 if __name__=='__main__':
     main()
+
